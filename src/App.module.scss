@@ -1,24 +1,42 @@
 .App {
+  min-height: 100vh;
+
+  $headerHeight: 70px;
+  $gap: 10px;
+
   .AppHeader {
-    padding: 10px 0;
-    text-align: center;
+    height: $headerHeight;
+    padding: $gap 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .Search {
       display: inline-block;
     }
+    border-bottom: 1px solid #eee;
   }
 
   .AppMain {
-  width: 100vx;
+  width: 100vw;
+  min-width: 1000px;
+  min-height: calc(100vh - #{$headerHeight});
   display: flex;
 
-  .SidePanel {
-    width: 20%;
-    max-width: 350px;
-    min-width: 300px;
-  }
-  .MainPanel {
-    width: 80%;
-  }
+    .SidePanel {
+      width: 20%;
+      max-width: 400px;
+      min-width: 340px;
+      border-right: 1px solid #eee;
+      box-sizing: border-box;
+      padding: $gap;
+    }
+    .MainPanel {
+      width: 80%;
+      box-sizing: border-box;
+      padding: $gap;
+      overflow: hidden;
+    }
 
   }
 }

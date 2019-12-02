@@ -4,6 +4,7 @@ import classes from "./App.module.scss";
 import SearchBar from "./SearchBar";
 import HeroList from "./HeroList";
 import HeroStatistics from "./HeroStatistics";
+import AutoResize from "./util/AutoResize";
 
 function App() {
   const [savedHeroList, setSavedHeroList] = useState([]);
@@ -44,10 +45,18 @@ function App() {
       </header>
       <main className={classes.AppMain}>
         <div className={classes.SidePanel}>
-          <HeroList heroes={savedHeroList} onHeroCompared={handleHeroCompare} />
+          <HeroList
+            heroes={savedHeroList}
+            onHeroCompared={handleHeroCompare}
+            onHeroUnSaved={handleHeroSelect}
+          />
         </div>
         <div className={classes.MainPanel}>
-          <HeroStatistics heros={comparingHeroes} />
+          <AutoResize>
+            {({ width }) => (
+              <HeroStatistics heroes={comparingHeroes} width={width} />
+            )}
+          </AutoResize>
         </div>
       </main>
     </div>

@@ -3,6 +3,7 @@ import { useDebounce } from "use-debounce";
 import { search_heros } from "./api";
 import classnames from "classnames";
 import classes from "./SearchBar.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import HeroCard from "./HeroCard";
 
@@ -17,7 +18,6 @@ function SearchBar({ onHeroSelect, savedHeroIds, className }) {
   const resultsShown = focused && (error || heroes.length !== 0);
 
   useEffect(() => {
-    // TODO: validate inputs
     const fetchHeroes = async () => {
       try {
         const heroes = await search_heros(debouncedQuery);
@@ -31,6 +31,7 @@ function SearchBar({ onHeroSelect, savedHeroIds, className }) {
     if (debouncedQuery !== "") {
       fetchHeroes();
     } else {
+      setError(null);
       setHeroes([]);
     }
   }, [debouncedQuery]);
@@ -42,12 +43,13 @@ function SearchBar({ onHeroSelect, savedHeroIds, className }) {
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
     >
-      Search Hero
+      <label>Search Heroes: </label>
       <input
         className={classes.SearchInput}
         name="hero"
         value={value}
         autoComplete="off"
+        placeholder="Hero name keyword"
         onChange={({ target }) => setValue(target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -58,7 +60,12 @@ function SearchBar({ onHeroSelect, savedHeroIds, className }) {
         })}
       >
         {error ? (
-          error
+          <div className={classes.Error}>
+            <span>
+              <FontAwesomeIcon icon="exclamation-triangle" />
+            </span>
+            {error}
+          </div>
         ) : (
           <ul>
             {heroes.map(hero => (

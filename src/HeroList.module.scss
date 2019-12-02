@@ -1,11 +1,44 @@
 .Item {
+    $padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    padding: $padding $padding / 2;
+    position: relative;
     cursor: pointer;
+
+    &:hover {
+        background-color: #eee;
+
+        .RemoveBtn {
+            opacity: .8;
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    .RemoveBtn {
+        opacity: 0;
+        padding: 0;
+        padding-left: $padding / 2;
+        padding-right: $padding / 2;
+        border: 0;
+        background: none;
+        color: red;
+    }
+
+    .Info {
+        flex-grow: 1;
+    }
+
     .State {
-        padding: 10px;
         color: green;
         font-size: 75%;
+        
+        input {
+            margin:0;
+            margin-left: $padding / 2;
+            vertical-align: middle;
+        }
     }
 }

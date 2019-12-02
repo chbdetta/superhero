@@ -19,6 +19,14 @@ $border: 1px solid #eee;
         max-height: 500px;
         overflow-y: auto;
 
+        .Error {
+            padding: 10px 15px;
+            > span {
+                color: rgb(241, 217, 0);
+                margin-right: 10px;
+            }
+        }
+
         ul {
             margin: 0;
         }
@@ -26,6 +34,7 @@ $border: 1px solid #eee;
         li {
             border-bottom: $border;
             cursor: pointer;
+            padding: 10px;
             &:hover {
                 background-color: #eeeef3;
             }
@@ -42,7 +51,6 @@ $border: 1px solid #eee;
             .State {
                 color: green;
                 font-size: 75%;
-                padding: 10px;
             }
         }
     }
