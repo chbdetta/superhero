@@ -1,0 +1,49 @@
+$border: 1px solid #eee;
+
+.SearchBar{
+    text-align: left;
+    position: relative;
+    &:focus {
+        outline: none;
+    }
+
+    .SearchInput {
+        padding: 5px 10px;
+    }
+
+    .SearchResults {
+        position: absolute;
+        background-color: #fff;
+        border: $border;
+        width: 300px;
+        max-height: 500px;
+        overflow-y: auto;
+
+        ul {
+            margin: 0;
+        }
+
+        li {
+            border-bottom: $border;
+            cursor: pointer;
+            &:hover {
+                background-color: #eeeef3;
+            }
+        }
+        
+        &.hidden {
+            display: none;
+        }
+
+        .SearchItem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .State {
+                color: green;
+                font-size: 75%;
+                padding: 10px;
+            }
+        }
+    }
+}

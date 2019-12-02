@@ -1,0 +1,11 @@
+.Item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    .State {
+        padding: 10px;
+        color: green;
+        font-size: 75%;
+    }
+}

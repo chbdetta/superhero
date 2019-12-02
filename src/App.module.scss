@@ -1,0 +1,24 @@
+.App {
+  .AppHeader {
+    padding: 10px 0;
+    text-align: center;
+    .Search {
+      display: inline-block;
+    }
+  }
+
+  .AppMain {
+  width: 100vx;
+  display: flex;
+
+  .SidePanel {
+    width: 20%;
+    max-width: 350px;
+    min-width: 300px;
+  }
+  .MainPanel {
+    width: 80%;
+  }
+
+  }
+}
