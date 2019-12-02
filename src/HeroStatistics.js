@@ -15,7 +15,7 @@ export default function HeroStatistics({ heroes, width }) {
         };
 
         heroes.forEach(hero => {
-          data[hero.name] = parseInt(hero.powerstats[data.powerName]) || 0;
+          data[hero.id] = parseInt(hero.powerstats[data.powerName]) || 0;
         });
 
         return data;
@@ -24,6 +24,22 @@ export default function HeroStatistics({ heroes, width }) {
     return null;
   }, [heroes]);
 
+  const heroInfo = useMemo(
+    () =>
+      heroes.reduce(
+        (obj, hero) =>
+          Object.assign(obj, {
+            [hero.id]: {
+              id: hero.id,
+              image: hero.image && hero.image.url,
+              name: hero.name
+            }
+          }),
+        {}
+      ),
+    [heroes]
+  );
+
   // Update the chart
   useEffect(() => {
     if (data == null) {
@@ -31,9 +47,9 @@ export default function HeroStatistics({ heroes, width }) {
     }
 
     const svg = d3.select(chartRef.current);
-    const margin = { top: 10, right: 10, bottom: 20, left: 40 };
-    const keys = Object.keys(data[0]).slice(1);
-    const groupKey = Object.keys(data[0])[0];
+    const margin = { top: 60, right: 10, bottom: 20, left: 40 };
+    const groupKey = "powerName";
+    const keys = Object.keys(data[0]).filter(k => k !== groupKey);
 
     const color = d3
       .scaleOrdinal()
@@ -103,25 +119,51 @@ export default function HeroStatistics({ heroes, width }) {
 
     svg.append("g").call(yAxis);
 
+    const imageSize = 40;
+
+    svg
+      .append("defs")
+      .selectAll("pattern")
+      .data(Object.values(heroInfo))
+      .join("pattern")
+      .attr("id", d => `image-${d.id}`)
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", `0 0 ${imageSize} ${imageSize}`)
+      .append("image")
+      .attr("width", imageSize)
+      .attr("href", d => d.image);
+
     svg
       .append("g")
       .selectAll("g")
       .data(data)
       .join("g")
       .attr("transform", d => `translate(${x0(d[groupKey])},0)`)
-      .selectAll("rect")
+      .selectAll("g")
       .data(d => keys.map(key => ({ key, value: d[key] })))
-      .join("rect")
-      .attr("x", d => x1(d.key))
-      .attr("y", d => y(d.value))
-      .attr("width", x1.bandwidth())
-      .attr("height", d => y(0) - y(d.value))
-      .attr("fill", d => color(d.key));
+      .join("g")
+      .attr("transform", d => `translate(${x1(d.key)}, ${y(d.value)})`)
+      .call(g =>
+        g
+          .append("rect")
+          .attr("width", x1.bandwidth())
+          .attr("height", d => y(0) - y(d.value))
+          .attr("fill", d => color(d.key))
+      )
+      .call(g =>
+        g
+          .append("circle")
+          .attr("fill", d => `url(#image-${d.key})`)
+          .attr("r", imageSize / 2)
+          .attr("cx", x1.bandwidth() / 2)
+          .attr("cy", -10 - imageSize / 2)
+      );
 
     return () => {
       svg.html("");
     };
-  }, [data, height, width]);
+  }, [data, heroInfo, height, width]);
 
   return (
     <>
