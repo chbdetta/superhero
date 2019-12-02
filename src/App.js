@@ -4,7 +4,6 @@ import classes from "./App.module.scss";
 import SearchBar from "./SearchBar";
 import HeroList from "./HeroList";
 import HeroStatistics from "./HeroStatistics";
-import AutoResize from "./util/AutoResize";
 
 function App() {
   const [savedHeroList, setSavedHeroList] = useState([]);
@@ -52,11 +51,7 @@ function App() {
           />
         </div>
         <div className={classes.MainPanel}>
-          <AutoResize>
-            {({ width }) => (
-              <HeroStatistics heroes={comparingHeroes} width={width} />
-            )}
-          </AutoResize>
+          <HeroStatistics heroes={comparingHeroes} />
         </div>
       </main>
     </div>

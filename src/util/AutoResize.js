@@ -1,11 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 
-export default function AutoResize({ children }) {
+export default function AutoResize(
+  { children, width: containerWidth } = { width: "100%" }
+) {
   const ref = useRef(null);
-  const [width, setWidth] = useState(0);
-  const { current: onResize } = useRef(() => {
+  const [width, setWidth] = useState(null);
+  const onResize = useCallback(() => {
     setWidth(ref.current.clientWidth);
-  });
+  }, [ref]);
 
   useEffect(() => {
     onResize();
@@ -16,8 +18,8 @@ export default function AutoResize({ children }) {
   }, [onResize, width]);
 
   return (
-    <div ref={ref} style={{ overflow: "hidden", width: "100%" }}>
-      {children({ width })}
+    <div ref={ref} style={{ overflow: "hidden", width: containerWidth }}>
+      {width && children({ width })}
     </div>
   );
 }
